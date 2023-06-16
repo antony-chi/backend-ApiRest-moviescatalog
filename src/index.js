@@ -1,8 +1,10 @@
-import { config } from "dotenv";
-config()
 import app from "./app.js";
+import { config } from "dotenv";
+import {dbconect} from "./db/dbconfig.js";
 
-const port = process.env.PORT //variable de entorno asignamos el puerto
+config()
+const port = process.env.PORT || 3000 //variable de entorno asignamos el puerto
+dbconect()
 
 //puerto escuha del servidor
 app.listen(port)
