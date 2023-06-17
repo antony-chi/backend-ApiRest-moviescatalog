@@ -4,9 +4,10 @@ const moviesSchema = Schema(
   {
     title: {
       type: String,
+      unique: [true,"title duplicaded"],
       require: true,
     },
-    originalLanguage: {
+    original_language: {
       type: String,
       require: true,
     },
@@ -16,6 +17,7 @@ const moviesSchema = Schema(
     },
   },
   {
+    versionKey: false, //para ocultar el __v en la bd
     timestamps: true,
   }
 );
