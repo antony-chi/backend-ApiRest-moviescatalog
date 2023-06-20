@@ -15,6 +15,10 @@ const moviesSchema = Schema(
       type: String,
       require: true,
     },
+    like: {
+      type: Boolean,
+      default: false
+    }
   },
   {
     versionKey: false, //para ocultar el __v en la bd

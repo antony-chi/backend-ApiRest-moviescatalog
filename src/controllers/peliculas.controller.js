@@ -9,7 +9,7 @@ export const getMovies = asyncHandler(async (req, res) => {
 
 //create Movie
 export const createMovie = asyncHandler(async (req, res) => {
-  const { title, original_language, overview } = req.body;
+  const { title, original_language, overview, } = req.body;
 
   if(!title || !original_language || !overview)(res.status(400).json("data not complet"))
 
@@ -23,10 +23,10 @@ export const createMovie = asyncHandler(async (req, res) => {
     title: title,
     original_language: original_language,
     overview: overview,
+    like: req.body.like ?  req.body.like : false
   };
 
   const saveMovie = await Movie(newMovie).save();
-  console.log(saveMovie);
   res.status(201).json(saveMovie);
 });
 
