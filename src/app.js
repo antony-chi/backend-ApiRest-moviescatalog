@@ -4,6 +4,7 @@ import morgan from "morgan";
 
 //---importamos routes -----
 import MoviesRoouter from "./routes/peliculas.router.js"
+import userRouter from "./routes/user.router.js"
 
 //--global setting---
 app.use(morgan("dev"))//    use morgan para ver las peticiones en consola
@@ -12,5 +13,6 @@ app.use(express.json())//indicamos que use json que envian api client
 
 //---usamos router-----
 app.use("/api/", MoviesRoouter)
+app.use("/api/user", userRouter)
 
 export default app;
