@@ -69,3 +69,15 @@ export const logout = (req, res) => {
   })
   res.status(200).json("logout")
 }
+
+export const myprofile = asyncHandler(async (req, res) => {
+  const id = req.user //del token provine solo el id
+  console.log(id)
+  const userFound =  await User.findById(id)
+  if(!userFound){
+    res.status (400).json({menssage: "User not found"})
+  }
+  console.log(userFound)
+
+  res.send("profile")
+})

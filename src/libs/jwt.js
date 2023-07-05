@@ -9,7 +9,7 @@ export const createAccessToken = (payload) => {
         payload,
         process.env.SECRET,
         {
-          expiresIn: "3600",
+          expiresIn: "1h",
         },
         (err, token) => {
           if (err) reject(err)

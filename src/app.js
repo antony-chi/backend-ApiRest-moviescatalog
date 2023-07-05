@@ -14,7 +14,7 @@ app.use(express.json()); //indicamos que use json que envian api client
 app.use(cookieParser()); //para usar cookie de los headers
 
 //---usamos router-----
-app.use("/api/", MoviesRoouter);
+app.use("/api/movie", MoviesRoouter);
 app.use("/api/user", userRouter);
 
 export default app;
