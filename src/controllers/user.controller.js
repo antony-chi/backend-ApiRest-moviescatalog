@@ -44,14 +44,15 @@ export const createUser = asyncHandler(async (req, res) => {
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const userFound = await User.findOne({ email: email });
 
+  const userFound = await User.findOne({ email: email });
+ 
   if (!userFound) {
     res.status(404).json({ menssage: "user not found" });
   }
 
   const isMatch = await bcrypt.compare(password, userFound.password);
-  console.log(isMatch)
+  console.log(isMatch + "login")
 
   if (!isMatch) {
     res.status(400).json({ menssage: "Incorrect password" });
@@ -61,6 +62,7 @@ export const login = asyncHandler(async (req, res) => {
 
   res.cookie("token", token);
   res.json({ username: userFound.username, token: token });
+  
 });
 
 export const logout = (req, res) => {
@@ -77,7 +79,7 @@ export const myprofile = asyncHandler(async (req, res) => {
   if(!userFound){
     res.status (400).json({menssage: "User not found"})
   }
-  console.log(userFound)
+  
 
-  res.send("profile")
+  res.json(userFound)
 })
