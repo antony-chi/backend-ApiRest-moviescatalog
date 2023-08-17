@@ -1,14 +1,36 @@
 import asyncHandler from "express-async-handler";
 import Movie from "../models/movies.model.js";
 
-//obtener movies
-export const getMovies = asyncHandler(async (req, res) => {
-  const movies = await Movie.find();
-  res.json(movies);
+//obtener movies por iduser
+export const getMoviesUser = asyncHandler(async (req, res) => {
+  const id = req.user._id
+
+    try {
+      const movies = await Movie.find({user: id});
+      if(movies.length === 0 ) res.json("Not Movies for User")
+      res.json(movies)
+      
+    } catch (error) {
+      console.log("error no user id")
+      res.json({menssage: "Error not font iduser"})
+    }
+  
 });
+
+//obtener movie 
+
+export const getMovies = asyncHandler( async (req, res) => {
+  
+  const movies = await Movie.find()
+  console.log("movies result")
+  res.json(movies)
+
+})
 
 //create Movie
 export const createMovie = asyncHandler(async (req, res) => {
+  const id = req.user._id
+  console.log(id)
   const { title, original_language, overview, } = req.body;
 
   if(!title || !original_language || !overview)(res.status(400).json("data not complet"))
@@ -23,7 +45,8 @@ export const createMovie = asyncHandler(async (req, res) => {
     title: title,
     original_language: original_language,
     overview: overview,
-    like: req.body.like ?  req.body.like : false
+    like: req.body.like ?  req.body.like : false,
+    user: id
   };
 
   const saveMovie = await Movie(newMovie).save();
