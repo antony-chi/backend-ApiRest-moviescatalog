@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Movie from "../models/movies.model.js";
+import { json } from "express";
 
 //obtener movies por iduser
 export const getMoviesUser = asyncHandler(async (req, res) => {
@@ -17,7 +18,7 @@ export const getMoviesUser = asyncHandler(async (req, res) => {
   
 });
 
-//obtener movie 
+//obtener movie  todas las peliculas
 
 export const getMovies = asyncHandler( async (req, res) => {
   
@@ -27,13 +28,22 @@ export const getMovies = asyncHandler( async (req, res) => {
 
 })
 
+export const getMoviesLike = asyncHandler( async(req, res) => {
+  const iduser = req.user._id
+
+  const movieLike = await Movie.find({user: iduser,like: true})
+  
+  res.json(movieLike)
+})
+
 //create Movie
 export const createMovie = asyncHandler(async (req, res) => {
   const id = req.user._id
-  console.log(id)
+  
   const { title, original_language, overview, } = req.body;
 
-  if(!title || !overview)(res.status(400).json("data not complet"))
+  try {
+    if(!title || !overview)(res.status(400).json("data not complet"))
 
   const buscarDupl = await Movie.findOne({ title: title });
   console.log(buscarDupl);
@@ -51,6 +61,11 @@ export const createMovie = asyncHandler(async (req, res) => {
 
   const saveMovie = await Movie(newMovie).save();
   res.status(201).json(saveMovie);
+
+  } catch (error) {
+    res.status(400).json("Error, action no aplied")
+  }
+  
 });
 
 //update movie
