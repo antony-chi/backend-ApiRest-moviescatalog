@@ -33,7 +33,7 @@ export const createMovie = asyncHandler(async (req, res) => {
   console.log(id)
   const { title, original_language, overview, } = req.body;
 
-  if(!title || !original_language || !overview)(res.status(400).json("data not complet"))
+  if(!title || !overview)(res.status(400).json("data not complet"))
 
   const buscarDupl = await Movie.findOne({ title: title });
   console.log(buscarDupl);
@@ -43,7 +43,7 @@ export const createMovie = asyncHandler(async (req, res) => {
 
   const newMovie = {
     title: title,
-    original_language: original_language,
+    original_language: original_language ? original_language: "es",
     overview: overview,
     like: req.body.like ?  req.body.like : false,
     user: id

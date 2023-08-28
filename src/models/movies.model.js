@@ -6,14 +6,17 @@ const moviesSchema = Schema(
       type: String,
       unique: [true,"title duplicaded"],
       require: true,
+      trim: true
     },
     original_language: {
       type: String,
       require: true,
+      default: "es",
     },
     overview: {
       type: String,
       require: true,
+      trim: true
     },
     like: {
       type: Boolean,
