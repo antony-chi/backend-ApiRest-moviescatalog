@@ -68,15 +68,37 @@ export const updateMovie = asyncHandler(async (req, res) => {
 
 //delete movie by id
 export const deleteMovie = asyncHandler(async (req, res) => {
+  const iduser = req.user._id
   const { id } = req.params;
-
-  const foundMovie = await Movie.findById(id);
-
-  if(!foundMovie){
-    res.json({menssage: "Erro not found Id " +id})
+  try {
+    //encuentra la pelicula con id
+    const foundMovie = await Movie.findById(id)
+    if (!foundMovie){
+      res.status(404).json("no found Id movie")
+    }
+    //compara si user de la respuesta es igual al user del user logueado
+    if(foundMovie.user.toString() === iduser.toString()){
+      console.log("soy if")
+      const result = await Movie.findOneAndRemove({_id: id, user: iduser})
+      res.json(result._id)
+      
+    }else{
+      res.json("not access for Id")
+    }
+    
+  } catch (error) {
+    res.status(404).json("Error, action not applied")
   }
-
-  await Movie.findByIdAndDelete(id)
-
-  res.json({ menssage: "deleted successfull "+id});
 });
+
+export const DeleteMovieId = asyncHandler( async (req,res) => {
+ const  iduser = req.user._id
+ const {id} = req.params
+
+ const result = await Movie.findById(id)
+
+ if(!result){ res.json("no se encontro el id de la pelicula")}
+ const dbRemov = await Movie.findByIdAndDelete(id)
+  res.json("succesfull "+dbRemov._id)
+
+})
