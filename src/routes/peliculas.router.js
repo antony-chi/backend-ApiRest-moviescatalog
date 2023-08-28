@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/", authReq, MoviesCtrl.getMovies);
 router.get("/moviuser", authReq, MoviesCtrl.getMoviesUser);
-router.post("/", authReq, MoviesCtrl.createMovie);
+router.post("/create/", authReq, MoviesCtrl.createMovie);
 router.put("/:id", MoviesCtrl.updateMovie);
 router.delete("/delet/:id",authReq, MoviesCtrl.deleteMovie);
 //router.delete("/deletOne/:id", authReq, MoviesCtrl.DeleteMovieId)
