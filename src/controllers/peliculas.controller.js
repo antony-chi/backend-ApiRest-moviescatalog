@@ -12,8 +12,7 @@ export const getMoviesUser = asyncHandler(async (req, res) => {
       res.json(movies)
       
     } catch (error) {
-      console.log("error no user id")
-      res.json({menssage: "Error not font iduser"})
+      res.status(500).json("error could not apply the action")
     }
   
 });
@@ -21,19 +20,29 @@ export const getMoviesUser = asyncHandler(async (req, res) => {
 //obtener movie  todas las peliculas
 
 export const getMovies = asyncHandler( async (req, res) => {
-  //pulate() rellena el campo user que esta de ref en model user monstrando solo el campo user
+
+  try {
+    //pulate() rellena el campo user que esta de ref en model user monstrando solo el campo user
   const movies = await Movie.find().populate("user", "name -_id")
   console.log("movies result")
   res.json(movies)
+  } catch (error) {
+    res.status(500).json("Error not get movie for Id")
+  }
+  
 
 })
 //get movies like true
 export const getMoviesLike = asyncHandler( async(req, res) => {
   const iduser = req.user._id
 
-  const movieLike = await Movie.find({user: iduser,like: true})
-  
+  try {
+    const movieLike = await Movie.find({user: iduser,like: true})
   res.json(movieLike)
+  } catch (error) {
+    res.status(500).json("Error not get movies like")
+  }
+  
 })
 
 //create Movie
@@ -45,9 +54,9 @@ export const createMovie = asyncHandler(async (req, res) => {
   try {
     if(!title || !overview)(res.status(400).json("data not complet"))
 
-  const buscarDupl = await Movie.findOne({ title: title });
-  console.log(buscarDupl);
-  if (buscarDupl != null) {
+    const buscarDupl = await Movie.findOne({ title: title });
+    console.log(buscarDupl);
+  if(buscarDupl != null) {
     res.status(400).json("titulo registrado, intente otro titulo");
   }
 
@@ -63,7 +72,7 @@ export const createMovie = asyncHandler(async (req, res) => {
   res.status(201).json(saveMovie);
 
   } catch (error) {
-    res.status(400).json("Error, action no aplied")
+    res.status(500).json("Error, action no aplied")
   }
   
 });
@@ -100,7 +109,7 @@ export const updateMovie = asyncHandler(async (req, res) => {
       res.status(401).json("no autorization")
     }
   } catch (error) {
-    res.status(404).json("Error, no action applied")
+    res.status(500).json("Error, no action applied")
   }
 
 });
