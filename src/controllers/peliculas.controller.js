@@ -27,7 +27,7 @@ export const getMovies = asyncHandler( async (req, res) => {
   res.json(movies)
 
 })
-
+//get movies like true
 export const getMoviesLike = asyncHandler( async(req, res) => {
   const iduser = req.user._id
 
@@ -70,15 +70,33 @@ export const createMovie = asyncHandler(async (req, res) => {
 
 //update movie
 export const updateMovie = asyncHandler(async (req, res) => {
+  const idUser = req.user._id
   const { id } = req.params;
-  console.log(req.body);
-  const updateMovie = await Movie.findById(id);
-  if (!updateMovie) {
-    res.status(404).json("no se encontro el id");
-  }
-  const saved = await Movie.findByIdAndUpdate(id, req.body, { new: true });
 
-  res.json(saved);
+  try {
+    // if(req.body.title === undefined || !req.body.title || !req.body){ res.status(400).json("no body request ")}
+
+    // const dupli = await Movie.findOne({ title : req.body.title})
+    // console.log(dupli)
+    // if(dupli) res.status(400).json("Existing Title, no saved")
+
+    
+    const updateMovie = await Movie.findById(id);
+    if (!updateMovie) {
+      res.status(404).json("no found id");
+    }
+    
+    if(updateMovie.user.toString() === idUser.toString()){
+      const saved = await Movie.findByIdAndUpdate(id, req.body, { new: true });
+      res.status(201).json(saved)
+      
+    }else{
+      res.status(401).json("no autorization")
+    }
+  } catch (error) {
+    res.status(404).json("Error, no action applied")
+  }
+
 });
 
 //delete movie by id
