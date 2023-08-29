@@ -81,6 +81,7 @@ export const createMovie = asyncHandler(async (req, res) => {
 export const updateMovie = asyncHandler(async (req, res) => {
   const idUser = req.user._id
   const { id } = req.params;
+  if(!id) res.status(400).json("no Id movie provider")
 
   try {
     if(JSON.stringify(req.body) === "{}"){ res.status(400).json("no body request")}
