@@ -74,7 +74,7 @@ export const updateMovie = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   try {
-    // if(req.body.title === undefined || !req.body.title || !req.body){ res.status(400).json("no body request ")}
+    if(JSON.stringify(req.body) === "{}"){ res.status(400).json("no body request")}
 
     // const dupli = await Movie.findOne({ title : req.body.title})
     // console.log(dupli)
@@ -87,8 +87,14 @@ export const updateMovie = asyncHandler(async (req, res) => {
     }
     
     if(updateMovie.user.toString() === idUser.toString()){
+      if(req.body.title){
+        const titleDupli = await Movie.findOne({title: req.body.title})
+        console.log(titleDupli)
+        if(titleDupli) {res.status(400).json("Existing Title, no saved")}
+
+      }
       const saved = await Movie.findByIdAndUpdate(id, req.body, { new: true });
-      res.status(201).json(saved)
+      res.status(201).json(saved._id+" succesfull update")
       
     }else{
       res.status(401).json("no autorization")
