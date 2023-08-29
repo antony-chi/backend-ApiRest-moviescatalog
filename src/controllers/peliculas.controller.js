@@ -21,8 +21,8 @@ export const getMoviesUser = asyncHandler(async (req, res) => {
 //obtener movie  todas las peliculas
 
 export const getMovies = asyncHandler( async (req, res) => {
-  
-  const movies = await Movie.find()
+  //pulate() rellena el campo user que esta de ref en model user monstrando solo el campo user
+  const movies = await Movie.find().populate("user", "name -_id")
   console.log("movies result")
   res.json(movies)
 
