@@ -8,7 +8,7 @@ router.get("/", authReq, MoviesCtrl.getMovies);
 router.get("/moviuser", authReq, MoviesCtrl.getMoviesUser);
 router.get("/like",authReq, MoviesCtrl.getMoviesLike)
 router.post("/create/", authReq, MoviesCtrl.createMovie);
-router.put("/:id", authReq, MoviesCtrl.updateMovie);
+router.put("/id/:id", authReq, MoviesCtrl.updateMovie);
 router.delete("/delet/:id",authReq, MoviesCtrl.deleteMovie);
 //router.delete("/deletOne/:id", authReq, MoviesCtrl.DeleteMovieId)
 
