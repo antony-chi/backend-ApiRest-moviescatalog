@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2"
 
 const moviesSchema = Schema(
   {
@@ -31,5 +32,5 @@ const moviesSchema = Schema(
     timestamps: true,
   }
 );
-
+moviesSchema.plugin(mongoosePaginate)
 export default model("movie", moviesSchema);
